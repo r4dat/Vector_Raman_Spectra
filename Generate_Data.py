@@ -175,10 +175,8 @@ def CONV(SPEC,sigma):
     
     return(np.abs(blur))
     
-def add_gaussian_white_noise(SPEC,std):
+def add_gaussian_white_noise(SPEC,std=0.1):
     mean = 0
-    if std==None:
-        std=0.1
     samples = np.random.normal(mean, std, size=n_points)
     out = SPEC+samples
     out = out + (np.ndarray.min(out))*-1 # force >= 0.
