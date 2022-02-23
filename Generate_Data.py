@@ -158,6 +158,31 @@ def generate_nrb():
 #     plt.show()
     return nrb
 
+ 
+def CONV(SPEC,sigma):
+    from scipy.fft import fft, ifft, fftfreq, fftshift
+    n=n_points
+    t = np.arange(0,n)
+    T=0.1e-9;
+    FT_spec = fftshift(fft(fftshift(SPEC)))
+    freq = fftshift(fftfreq(t.shape[-1],T))
+    
+    FT_gauss = np.exp(-0.5*(freq**2)/(sigma**2))
+    
+    FT_blur = FT_spec*FT_gauss
+    blur = fftshift(ifft(fftshift(FT_blur)))
+    blur=np.abs(blur)
+    
+    return(np.abs(blur))
+    
+def add_gaussian_white_noise(SPEC,std):
+    mean = 0
+    if std==None:
+        std=0.1
+    samples = np.random.normal(mean, std, size=n_points)
+    out = SPEC+samples
+    out = out + (np.ndarray.min(out))*-1 # force >= 0.
+    return out
 
 #Define functions for generating bCARS spectrum 
 def generate_bCARS(min_features,max_features,min_width,max_width):
