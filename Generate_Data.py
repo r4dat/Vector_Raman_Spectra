@@ -175,7 +175,7 @@ def CONV(SPEC,sigma):
     
     return(np.abs(blur))
     
-def add_gaussian_white_noise(SPEC,std=0.1):
+def add_gaussian_white_noise(SPEC,std=0.01):
     mean = 0
     samples = np.random.normal(mean, std, size=n_points)
     out = SPEC+samples
@@ -192,13 +192,19 @@ def generate_bCARS(min_features,max_features,min_width,max_width):
         chi3.imag: (n_points,)
     """
     chi3 = generate_chi3(random_parameters_for_chi3(min_features,max_features,min_width,max_width))*np.random.uniform(0.3,1) #add weight between .3 and 1 
-    nrb = generate_nrb() #nrb will have valeus between 0 and 1
-    noise = np.random.randn(n_points)*np.random.uniform(0.0005,0.003)
-    bcars = ((np.abs(chi3+nrb)**2)/2+noise)
-#     plt.figure()
-#     plt.plot(chi3.imag)
-#     plt.grid()
-#     plt.show()
+#    nrb = generate_nrb() #nrb will have valeus between 0 and 1
+#    noise = np.random.randn(n_points)*np.random.uniform(0.0005,0.003)
+#    bcars = ((np.abs(chi3+nrb)**2)/2+noise)
+    bcars = chi3.imag
+    tmp = CONV(chi3.imag,1e8)
+    
+    # gaussian blur the noised bcars.
+    bcars= add_gaussian_white_noise(tmp,std=0.01)
+    # plt.figure()
+    # plt.plot(bcars)
+    # plt.plot(chi3.imag)
+    # plt.grid()
+    # plt.show()
     return bcars, chi3.imag
 
 def generate_batch(min_features,max_features,min_width,max_width,size = 10000):
