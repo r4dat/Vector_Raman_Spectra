@@ -215,7 +215,9 @@ else: # testing
         a=3
         b='c'
     #dataset_val = raman_dataset('data', str(a)+b+'Raman_spectrums_valid.csv', str(a)+b+'CARS_spectrums_valid.csv')
+    # cars == smoothed, raman == true.
     dataset_val = raman_dataset('data', '3cCARS_spectrums_valid.csv', '3cRaman_spectrums_valid.csv')
+    
 
     val_loader = DataLoader(dataset_val, batch_size=args.batch_size, shuffle=False, num_workers=0)
     checkpoint_path = os.path.join(model_save_dir, 'checkpoint'+str(args.dataset)+'.pth.tar')

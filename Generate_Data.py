@@ -368,7 +368,7 @@ def generate_one_spectrum_Paper_1(dataset_number):
 #save batch to memory for training and validation - this is optional if we want to make sure the same data was used to train different methods
 #it is obviously MUCH faster to generate data on the fly and not read to/write from RzOM
 
-def generate_and_save_data(N_train,N_valid,fname='./data/',a=1,b='a'):
+def generate_and_save_data(N_train,N_valid,fname='./data/',a=1,b='a',sigma_val=3e8,std_val=125e-6):
 
     (min_features,max_features,min_width,max_width) = key_parameters(a,b)
 
@@ -385,10 +385,10 @@ def generate_and_save_data(N_train,N_valid,fname='./data/',a=1,b='a'):
     print(np.isnan(BCARS_valid).any())
     print(np.isnan(RAMAN_valid).any())
 
-    pd.DataFrame(RAMAN_valid).to_csv(fname+str(a)+b+'Raman_spectrums_valid.csv')
-    pd.DataFrame(BCARS_valid).to_csv(fname+str(a)+b+'CARS_spectrums_valid.csv')
-    pd.DataFrame(RAMAN_train).to_csv(fname+str(a)+b+'Raman_spectrums_train.csv')
-    pd.DataFrame(BCARS_train).to_csv(fname+str(a)+b+'CARS_spectrums_train.csv')
+    pd.DataFrame(RAMAN_valid).to_csv(fname+str(a)+b+'sigma'+str(sigma_val)+'std'+str(std_val)+'Raman_spectrums_valid.csv')
+    pd.DataFrame(BCARS_valid).to_csv(fname+str(a)+b+'sigma'+str(sigma_val)+'std'+str(std_val)+'CARS_spectrums_valid.csv')
+    pd.DataFrame(RAMAN_train).to_csv(fname+str(a)+b+'sigma'+str(sigma_val)+'std'+str(std_val)+'Raman_spectrums_train.csv')
+    pd.DataFrame(BCARS_train).to_csv(fname+str(a)+b+'sigma'+str(sigma_val)+'std'+str(std_val)+'CARS_spectrums_train.csv')
 
     return BCARS_train, RAMAN_train, BCARS_valid, RAMAN_valid
 
@@ -414,4 +414,5 @@ def load_data(name1,name2):
     return BCARS_train, RAMAN_train, BCARS_valid, RAMAN_valid
 
 if __name__=='__main__':
-    generate_and_save_data(N_train=100,N_valid=100,fname='./data/',a=3,b='c')
+    generate_and_save_data(N_train=1000,N_valid=1000,fname='./data/',a=1,b='a',sigma_val=3e8,std_val=125e-6) #1
+    generate_and_save_data(N_train=1000,N_valid=1000,fname='./data/',a=3,b='c',sigma_val=3e8,std_val=125e-6) #9
