@@ -122,7 +122,7 @@ print('Before if is train')
 # training
 if args.is_train:
     print('Loading dataset.....')
-    dataset_train = raman_dataset_fast(args.dataset,1000)
+    dataset_train = raman_dataset_fast(args.dataset,200000)
     train_loader = DataLoader(dataset_train, batch_size=args.batch_size, shuffle=True, num_workers=0)
     dataset_val = raman_dataset_fast(args.dataset,2000)
     val_loader = DataLoader(dataset_val, batch_size=args.batch_size, shuffle=False, num_workers=0)
@@ -216,9 +216,8 @@ else: # testing
         b='c'
     #dataset_val = raman_dataset('data', str(a)+b+'Raman_spectrums_valid.csv', str(a)+b+'CARS_spectrums_valid.csv')
     # cars == smoothed, raman == true.
-    dataset_val = raman_dataset('data', '3cCARS_spectrums_valid.csv', '3cRaman_spectrums_valid.csv')
-    
-
+#    dataset_val = raman_dataset('data', '3cCARS_spectrums_valid.csv', '3cRaman_spectrums_valid.csv')
+    dataset_val = raman_dataset('data', '3csigma300000000.0std0.000125Raman_spectrums_valid.csv','3csigma300000000.0std0.000125CARS_spectrums_valid.csv')
     val_loader = DataLoader(dataset_val, batch_size=args.batch_size, shuffle=False, num_workers=0)
     checkpoint_path = os.path.join(model_save_dir, 'checkpoint'+str(args.dataset)+'.pth.tar')
     checkpoint = torch.load(checkpoint_path, map_location='cpu')

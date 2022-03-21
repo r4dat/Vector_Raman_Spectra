@@ -414,5 +414,5 @@ def load_data(name1,name2):
     return BCARS_train, RAMAN_train, BCARS_valid, RAMAN_valid
 
 if __name__=='__main__':
-    generate_and_save_data(N_train=1000,N_valid=1000,fname='./data/',a=1,b='a',sigma_val=3e8,std_val=125e-6) #1
-    generate_and_save_data(N_train=1000,N_valid=1000,fname='./data/',a=3,b='c',sigma_val=3e8,std_val=125e-6) #9
+    generate_and_save_data(N_train=100,N_valid=100,fname='./data/',a=1,b='a',sigma_val=3e8,std_val=125e-6) #1
+    generate_and_save_data(N_train=100,N_valid=100,fname='./data/',a=3,b='c',sigma_val=3e8,std_val=125e-6) #9
