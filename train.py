@@ -82,7 +82,7 @@ optimizer = torch.optim.SGD(model.parameters(), lr=args.lr, momentum=0.9, weight
 from Generate_Data import *
 class raman_dataset_fast(Dataset):
     def __init__(self, dataset, size):
-        self.cars_data, self.raman_data = generate_datasets(dataset,size,sigma=args.sigma,std=args.std)
+        self.cars_data, self.raman_data = generate_datasets(dataset,size,sigma=args.sigma,std=args.std,SNR=100)
          
     def __len__(self):
         return len(self.raman_data)
@@ -234,6 +234,7 @@ else: # testing
             results.append((outputs.cpu()).numpy())
             loss_valid = loss_function(outputs, raman)
             val_loss.update(loss_valid.item(), raman.size(0))
+        print("Exit for loop of valid")
         print(np.size(results))
         results = np.array(results)
         results = results.reshape(results.shape[1],results.shape[2])
