@@ -91,7 +91,6 @@ def key_parameters(a=3,b='c'):
         max_features = 50 
         min_width = 0.5
         max_width = np.random.randint(15, 75)
-
     else:
         print('Case not defined correctly')
     return (min_features,max_features,min_width,max_width)
@@ -285,6 +284,50 @@ def generate_datasets(dataset_number,N,sigma,SNR,std):
     BLUR, RAMAN = generate_batch(min_features,max_features,min_width,max_width,N,sigma,SNR,std) # generate bactch for training
     return BLUR, RAMAN
 
+
+def generate_datasets(dataset_number,N,sigma,std):
+    if dataset_number == 1:
+        a=1
+        b='a'
+    elif dataset_number == 2:
+        a=1
+        b='b'
+    elif dataset_number == 3:
+        a=1
+        b='c'
+    elif dataset_number == 4:
+        a=2
+        b='a'
+    elif dataset_number == 5:
+        a=2
+        b='b'
+    elif dataset_number == 6:
+        a=2
+        b='c'
+    elif dataset_number == 7:
+        a=3
+        b='a'
+    elif dataset_number == 8:
+        a=3
+        b='b'
+    elif dataset_number == 9:
+        a=3
+        b='c'
+    elif dataset_number == 10:
+        a= 4
+        b='d'
+    (min_features,max_features,min_width,max_width) = key_parameters(a,b)
+    BCARS, RAMAN = generate_batch(min_features,max_features,min_width,max_width,N,sigma,std) # generate bactch for training
+    return BCARS, RAMAN
+#    X = np.empty((N, n_points,1))
+#    y = np.empty((N,n_points))
+
+#    for i in range(N):
+#        X[i,:,0] = BCARS[i,:]
+#        y[i,:] = RAMAN[i,:]
+#    return X, y
+
+
 #save batch to memory for training and validation - this is optional if we want to make sure the same data was used to train different methods
 #it is obviously MUCH faster to generate data on the fly and not read to/write from RzOM
 
@@ -358,6 +401,4 @@ def test():
 
 
 if __name__=='__main__':
-    print("run main")
-    #generate_and_save_data(N_train=1000,N_valid=1000,fname='./data/',a=4,b='d',sigma_val=3e8,std_val=125e-6) //#1
-    #generate_and_save_data(N_train=1000,N_valid=1000,fname='./data/',a=4,b='d',sigma_val=3e8,std_val=125e-6) //#9
+    generate_and_save_data(N_train=1000,N_valid=1000,fname='./data/',a=4,b='d',sigma_val=2e8,std_val=125e-4) #10

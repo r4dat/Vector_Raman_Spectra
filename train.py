@@ -76,13 +76,15 @@ elif args.base_model == 'cae_7':
     model = CAE.CAE_7(data_len=1000, kernel_size=8, is_skip=args.is_skip)
 elif args.base_model == 'cae_8':
     model = CAE.CAE_8(data_len=1000, kernel_size=8, is_skip=args.is_skip)
+elif args.base_model == 'cae_9':
+    model = CAE.CAE_9(data_len=1000, kernel_size=8, is_skip=args.is_skip)
 model.cuda()
 optimizer = torch.optim.SGD(model.parameters(), lr=args.lr, momentum=0.9, weight_decay=args.weight_decay)
 
 from Generate_Data import *
 class raman_dataset_fast(Dataset):
     def __init__(self, dataset, size):
-        self.cars_data, self.raman_data = generate_datasets(dataset,size,sigma=args.sigma,std=args.std,SNR=100)
+        self.cars_data, self.raman_data = generate_datasets(dataset,size,sigma=args.sigma,std=args.std)
          
     def __len__(self):
         return len(self.raman_data)
@@ -217,7 +219,7 @@ else: # testing
     #dataset_val = raman_dataset('data', str(a)+b+'Raman_spectrums_valid.csv', str(a)+b+'CARS_spectrums_valid.csv')
     # cars == smoothed, raman == true.
 #    dataset_val = raman_dataset('data', '3cCARS_spectrums_valid.csv', '3cRaman_spectrums_valid.csv')
-    dataset_val = raman_dataset('data', '3csigma300000000.0std0.000125Raman_spectrums_valid.csv','3csigma300000000.0std0.000125CARS_spectrums_valid.csv')
+    dataset_val = raman_dataset('data', '1asigma200000000.0std0.0125Raman_spectrums_valid.csv','1asigma200000000.0std0.0125Blur_spectrums_valid.csv')
     val_loader = DataLoader(dataset_val, batch_size=args.batch_size, shuffle=False, num_workers=0)
     checkpoint_path = os.path.join(model_save_dir, 'checkpoint'+str(args.dataset)+'.pth.tar')
     checkpoint = torch.load(checkpoint_path, map_location='cpu')
@@ -239,7 +241,7 @@ else: # testing
         results = np.array(results)
         results = results.reshape(results.shape[1],results.shape[2])
         print(np.size(results))
-        pd.DataFrame(results).to_csv('./data/'+str(a)+b+'Raman_spectrums_results.csv')
+        pd.DataFrame(results).to_csv('./data/'+str(a)+b+'new_Raman_spectrums_results.csv')
     print('----validation----')
     print_string = 'loss: {loss:.5f}'.format(loss=val_loss.avg)
     print(print_string)
