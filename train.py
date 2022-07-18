@@ -21,6 +21,7 @@ import utils
 def loss_function(recon_x, x): #hidden_neurons_batch: [samples, number of neurons]
     # BCE = F.mse_loss(recon_x.view(-1, 1000), x.view(-1, 1000))
     BCE = F.l1_loss(recon_x.view(-1, 1000), x.view(-1, 1000))
+    
     return BCE.cuda()
 
 def adjust_learning_rate(learning_rate, optimizer, epoch, lr_steps):
@@ -68,6 +69,8 @@ cur_time = time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(time.time()))
 
 if args.base_model == 'cae_4':
     model = CAE.CAE_4(data_len=1000, kernel_size=8, is_skip=args.is_skip)
+elif args.base_model == 'cae_4_drop':
+    model = CAE.CAE_4_DROP(data_len=1000, kernel_size=8, is_skip=args.is_skip)
 elif args.base_model == 'cae_5':
     model = CAE.CAE_5(data_len=1000, kernel_size=8, is_skip=args.is_skip)
 elif args.base_model == 'cae_6':
@@ -108,14 +111,17 @@ class raman_dataset(Dataset):
         return raman_data, cars_data
 
 # define model save path
+from datetime import datetime
+dt_str = datetime.now().strftime("_%d%m%Y_%H%M_")
+# '_l1_drop2e_',dt_str,
 if args.is_skip == True:
     model_save_dir = os.path.join('trained_model', '{}-skip'.format(args.base_model),'{}-dataset'.format(args.dataset),
                                   '_'.join(['{}-sigma'.format(args.sigma),'{}-std'.format(args.std)]))
     logdir = os.path.join('log', '{}-skip'.format(args.base_model),'{}-dataset'.format(args.dataset),
-                          '_'.join(['{}-sigma'.format(args.sigma),'{}-std'.format(args.std)]))
+                          '_'.join(['1M','{}-sigma'.format(args.sigma),'{}-std'.format(args.std)]))
 else:
     model_save_dir = os.path.join('trained_model', '{}-noskip'.format(args.base_model),'{}-dataset'.format(args.dataset),
-                                  '_'.join(['{}-sigma'.format(args.sigma),'{}-std'.format(args.std)]))
+                                  '_'.join(['1M','{}-sigma'.format(args.sigma),'{}-std'.format(args.std)]))
     logdir = os.path.join('log', '{}-noskip'.format(args.base_model),'{}-dataset'.format(args.dataset),
                           '_'.join(['{}-sigma'.format(args.sigma),'{}-std'.format(args.std)]))
 
@@ -124,9 +130,9 @@ print('Before if is train')
 # training
 if args.is_train:
     print('Loading dataset.....')
-    dataset_train = raman_dataset_fast(args.dataset,200000)
+    dataset_train = raman_dataset_fast(args.dataset,900000)
     train_loader = DataLoader(dataset_train, batch_size=args.batch_size, shuffle=True, num_workers=0)
-    dataset_val = raman_dataset_fast(args.dataset,2000)
+    dataset_val = raman_dataset_fast(args.dataset,300000)
     val_loader = DataLoader(dataset_val, batch_size=args.batch_size, shuffle=False, num_workers=0)
 
     if not os.path.exists(logdir):
@@ -213,13 +219,18 @@ else: # testing
     elif args.dataset == 8:
         a=3
         b='b'
-    else:
+    elif args.dataset == 9:
         a=3
-        b='c'
+        b='b'
+    elif args.dataset == 10:
+        a=4
+        b='d'
+    else:
+        print("Error")
     #dataset_val = raman_dataset('data', str(a)+b+'Raman_spectrums_valid.csv', str(a)+b+'CARS_spectrums_valid.csv')
     # cars == smoothed, raman == true.
 #    dataset_val = raman_dataset('data', '3cCARS_spectrums_valid.csv', '3cRaman_spectrums_valid.csv')
-    dataset_val = raman_dataset('data', '1asigma200000000.0std0.0125Raman_spectrums_valid.csv','1asigma200000000.0std0.0125Blur_spectrums_valid.csv')
+    dataset_val = raman_dataset('data', '4dsigmanew_0_24std_Raman_spectrums_valid.csv','4dsigmanew_0_24std_BLUR_spectrums_valid.csv')
     val_loader = DataLoader(dataset_val, batch_size=args.batch_size, shuffle=False, num_workers=0)
     checkpoint_path = os.path.join(model_save_dir, 'checkpoint'+str(args.dataset)+'.pth.tar')
     checkpoint = torch.load(checkpoint_path, map_location='cpu')
@@ -231,12 +242,19 @@ else: # testing
         results=[]
         for val_step, inputs in enumerate(tqdm(val_loader)):
             raman = inputs[0].float().cuda()
-            cars = inputs[1].float().cuda()
-            outputs = model(cars)
+            blur = inputs[1].float().cuda()
+            outputs = model(blur)
+            import pdb
+            pdb.set_trace()
             results.append((outputs.cpu()).numpy())
             loss_valid = loss_function(outputs, raman)
             val_loss.update(loss_valid.item(), raman.size(0))
         print("Exit for loop of valid")
+        print('----validation----')
+        print_string = 'loss: {loss:.5f}'.format(loss=val_loss.avg)
+        print(print_string)
+        #import pdb
+        #pdb.set_trace()
         print(np.size(results))
         results = np.array(results)
         results = results.reshape(results.shape[1],results.shape[2])

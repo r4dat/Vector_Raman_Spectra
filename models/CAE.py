@@ -591,7 +591,78 @@ class CAE_9(nn.Module):
         return out.squeeze(1)
 
 
+class CAE_4_DROP(nn.Module):
+    def __init__(self, data_len, kernel_size, is_skip=True):
+        super(CAE_4_DROP, self).__init__()
+        kernel_size = kernel_size
+        print('Kernel size: {}'.format(kernel_size))
+        self.encoder1 = encoder(data_len=data_len, inplanes=1, planes=64, 
+                                kernel_size=kernel_size, stride=1, padding=0)
+        self.en1_num_feature = self.encoder1.feature_len
+        self.encoder2 = encoder(data_len=self.en1_num_feature, inplanes=64, planes=128, 
+                                kernel_size=kernel_size, 
+                                stride=2, padding=0)
+        self.en2_num_feature = self.encoder2.feature_len 
+        self.encoder3 = encoder(data_len=self.en2_num_feature, inplanes=128, planes=256, 
+                                kernel_size=kernel_size, 
+                                stride=2, padding=0)
+        self.en3_num_feature = self.encoder3.feature_len
+        self.encoder4 = encoder(data_len=self.en3_num_feature, inplanes=256, planes=512, 
+                                kernel_size=kernel_size, 
+                                stride=2, padding=0)
+        self.en4_num_feature = self.encoder4.feature_len
 
+        print('Latent space dimension {}'.format(self.en4_num_feature))
+
+        self.decoder1 = decoder(data_len=self.en4_num_feature, data_len_match=self.en3_num_feature, 
+                                inplanes=512, planes=256, kernel_size=kernel_size, stride=2, padding=0)
+        self.de1_num_feature = self.decoder1.feature_len 
+        self.decoder2 = decoder(data_len=self.en3_num_feature, data_len_match=self.en2_num_feature, 
+                                inplanes=256, planes=128, kernel_size=kernel_size, stride=2, padding=0)
+        self.de2_num_feature = self.decoder2.feature_len     
+        self.decoder3 = decoder(data_len=self.en2_num_feature, data_len_match=self.en1_num_feature,
+                                inplanes=128, planes=64, kernel_size=kernel_size, stride=2, padding=0)
+        self.de3_num_feature = self.decoder3.feature_len  
+
+        kernel_size = kernel_size
+        stride = 1
+        output_padding = 0
+        padding = 0
+        dilation = 1
+
+        last_feature_len = cal_dconv_feature(self.de3_num_feature, kernel_size, stride, padding, dilation, output_padding)
+        if data_len > last_feature_len:
+            padding = data_len - last_feature_len
+        else:
+            padding = 0
+        self.feature_len = cal_dconv_feature(self.de3_num_feature, kernel_size, stride, padding, dilation, output_padding)
+        self.decoder4 = nn.ConvTranspose1d(64, 1, 
+                                            kernel_size=kernel_size, stride=stride, 
+                                            bias=False,
+                                            padding=padding,
+                                            dilation = dilation,
+                                            output_padding=output_padding)
+        self.sigmoid = nn.Sigmoid()  
+        self.is_skip = is_skip
+        self.dropout = nn.Dropout(0.1)
+
+    def forward(self, x):
+        x = x.unsqueeze(1)
+        en1 = self.encoder1(x)
+        en2 = self.encoder2(en1)
+        en2 = self.dropout(en2)
+        en3 = self.encoder3(en2)
+        encoding = self.encoder4(en3)
+        de1 = self.decoder1(encoding)
+        if self.is_skip:
+            de2 = self.decoder2(de1+en3)
+            de3 = self.decoder3(de2+en2)
+        else:
+            de2 = self.decoder2(de1)
+            de3 = self.decoder3(de2)
+        de4 = self.decoder4(de3)
+        out = self.sigmoid(de4)
+        return out.squeeze(1)
 
 
 

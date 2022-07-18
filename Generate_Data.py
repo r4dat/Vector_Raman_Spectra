@@ -197,10 +197,10 @@ def poisson_point_noise(BLUR,RAMAN,SNR):
     RAMAN = RAMAN * scale
     NOISEY = np.random.poisson(lam=IRRADIANCE)
     #now normalise identically
-    RAMAN=RAMAN-np.min(NOISEY)
-    NOISEY=NOISEY-np.min(NOISEY)
-    RAMAN=RAMAN/np.max(NOISEY)
-    NOISEY=NOISEY/np.max(NOISEY)
+    NOISEY = NOISEY - np.min(RAMAN)
+    RAMAN = RAMAN - np.min(RAMAN) # original all noisy
+    NOISEY = NOISEY/np.max(RAMAN)
+    RAMAN = RAMAN/np.max(RAMAN)
     return NOISEY,RAMAN
 	
 
@@ -348,7 +348,7 @@ def generate_and_save_data(N_train,N_valid,fname='./data/',a=1,b='a',sigma_val=3
     print(np.isnan(BLUR_valid).any())
     print(np.isnan(RAMAN_valid).any())
 
-    sigma_val="0_24"
+    sigma_val="1new_0_24"
     std_val="_"
     pd.DataFrame(RAMAN_valid).to_csv(fname+str(a)+b+'sigma'+str(sigma_val)+'std'+str(std_val)+'Raman_spectrums_valid.csv')
     pd.DataFrame(BLUR_valid).to_csv(fname+str(a)+b+'sigma'+str(sigma_val)+'std'+str(std_val)+'BLUR_spectrums_valid.csv')
@@ -401,4 +401,4 @@ def test():
 
 
 if __name__=='__main__':
-    generate_and_save_data(N_train=1000,N_valid=1000,fname='./data/',a=4,b='d',sigma_val=2e8,std_val=125e-4) #10
+    generate_and_save_data(N_train=20000,N_valid=20000,fname='./data/',a=4,b='d',sigma_val=2e8,std_val=125e-4) #10
