@@ -1,0 +1,118 @@
+Kernel size: 8
+Latent space dimension 118
+Exit for loop of valid
+----validation----
+
+/home/bhennelly/Documents/Rob-Roy/Vector_Raman_Spectra/trained_model/1m_200k/cae_4-skip/10-dataset/1.0-sigma_1.0-std/checkpoint10.pth.tar
+
+loss: 0.00620
+Kernel size: 8
+Latent space dimension 118
+Exit for loop of valid
+----validation----
+
+/home/bhennelly/Documents/Rob-Roy/Vector_Raman_Spectra/trained_model/1m_200k/cae_4_drop-skip/10-dataset/2.0-sigma_2.0-std/checkpoint10.pth.tar
+
+loss: 0.00516
+Kernel size: 8
+Latent space dimension 118
+Exit for loop of valid
+----validation----
+
+/home/bhennelly/Documents/Rob-Roy/Vector_Raman_Spectra/trained_model/1m_200k/cae_4_drop-skip/10-dataset/1.0-sigma_1.0-std/checkpoint10.pth.tar
+
+loss: 0.00542
+Kernel size: 8
+Latent space dimension 4
+Exit for loop of valid
+----validation----
+
+/home/bhennelly/Documents/Rob-Roy/Vector_Raman_Spectra/trained_model/1m_200k/cae_9-skip/10-dataset/2.0-sigma_2.0-std/checkpoint10.pth.tar
+
+loss: 0.00337
+Kernel size: 8
+Latent space dimension 4
+Exit for loop of valid
+----validation----
+
+/home/bhennelly/Documents/Rob-Roy/Vector_Raman_Spectra/trained_model/1m_200k/cae_9-skip/10-dataset/1.0-sigma_1.0-std/checkpoint10.pth.tar
+
+loss: 0.00653
+Kernel size: 8
+Latent space dimension 118
+Exit for loop of valid
+----validation----
+
+/home/bhennelly/Documents/Rob-Roy/Vector_Raman_Spectra/trained_model/900k_300k/cae_4-skip/10-dataset/1.0-sigma_1.0-std/checkpoint10.pth.tar
+
+loss: 0.01165
+Kernel size: 8
+Latent space dimension 118
+Exit for loop of valid
+----validation----
+
+/home/bhennelly/Documents/Rob-Roy/Vector_Raman_Spectra/trained_model/900k_300k/cae_4_drop-skip/10-dataset/4.0-sigma_4.0-std/checkpoint10.pth.tar
+
+loss: 0.01154
+Kernel size: 8
+Latent space dimension 118
+Exit for loop of valid
+----validation----
+
+/home/bhennelly/Documents/Rob-Roy/Vector_Raman_Spectra/trained_model/900k_300k/cae_4_drop-skip/10-dataset/2.0-sigma_2.0-std/checkpoint10.pth.tar
+
+loss: 0.00557
+Kernel size: 8
+Latent space dimension 118
+Exit for loop of valid
+----validation----
+
+/home/bhennelly/Documents/Rob-Roy/Vector_Raman_Spectra/trained_model/900k_300k/cae_4_drop-skip/10-dataset/3.0-sigma_3.0-std/checkpoint10.pth.tar
+
+loss: 0.00502
+Kernel size: 8
+Latent space dimension 4
+Exit for loop of valid
+----validation----
+
+/home/bhennelly/Documents/Rob-Roy/Vector_Raman_Spectra/trained_model/900k_300k/cae_9-skip/10-dataset/2.0-sigma_2.0-std/checkpoint10.pth.tar
+
+loss: 0.00680
+Kernel size: 8
+Latent space dimension 118
+Exit for loop of valid
+----validation----
+
+/home/bhennelly/Documents/Rob-Roy/Vector_Raman_Spectra/trained_model/500k_50k/cae_4-skip/10-dataset/1.0-sigma_1.0-std/checkpoint10.pth.tar
+
+loss: 0.00489
+Kernel size: 8
+Latent space dimension 118
+Exit for loop of valid
+----validation----
+
+/home/bhennelly/Documents/Rob-Roy/Vector_Raman_Spectra/trained_model/500k_50k/cae_4_drop-skip/9-dataset/2.0-sigma_2.0-std/checkpoint9.pth.tar
+
+loss: 0.00544
+Kernel size: 8
+Latent space dimension 4
+Exit for loop of valid
+----validation----
+
+/home/bhennelly/Documents/Rob-Roy/Vector_Raman_Spectra/trained_model/500k_50k/cae_9-skip/10-dataset/2.0-sigma_2.0-std/checkpoint10.pth.tar
+
+loss: 0.00861
+Kernel size: 8
+Latent space dimension 4
+Exit for loop of valid
+----validation----
+
+/home/bhennelly/Documents/Rob-Roy/Vector_Raman_Spectra/trained_model/500k_50k/cae_9-skip/10-dataset/1.0-sigma_1.0-std/checkpoint10.pth.tar
+
+loss: 0.00404
+0.0033689498770982026
+/home/bhennelly/Documents/Rob-Roy/Vector_Raman_Spectra/trained_model/500k_50k/cae_9-skip/10-dataset/1.0-sigma_1.0-std/checkpoint10.pth.tar
+Baseline MAE:
+0.010736885640240829
+RL Decon MAE:
+0.0
